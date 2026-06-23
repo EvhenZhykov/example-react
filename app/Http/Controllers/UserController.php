@@ -3,15 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class UserController extends Controller
 {
     /**
      * Display a paginated list of users for Inertia.
      */
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $perPage = (int) $request->get('per_page', 15);
 
@@ -25,7 +27,7 @@ class UserController extends Controller
     /**
      * Show the form for creating a user.
      */
-    public function create()
+    public function create(): Response
     {
         return Inertia::render('users/create');
     }
@@ -33,7 +35,7 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified user.
      */
-    public function edit(User $user)
+    public function edit(User $user): Response
     {
         return Inertia::render('users/edit', [
             'user' => $user,
@@ -43,7 +45,7 @@ class UserController extends Controller
     /**
      * Store a newly created user in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $data = $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
@@ -64,7 +66,7 @@ class UserController extends Controller
     /**
      * Update the specified user in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, User $user): RedirectResponse
     {
         $data = $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
@@ -83,7 +85,7 @@ class UserController extends Controller
     /**
      * Remove the specified user from storage.
      */
-    public function destroy(User $user)
+    public function destroy(User $user): RedirectResponse
     {
         // Soft-delete if model uses SoftDeletes, otherwise hard delete
         $user->delete();
