@@ -70,7 +70,11 @@ export default function Users() {
                           <Pencil className="size-4" />
                           <span className="sr-only">Edit</span>
                         </Link>
-                        <Button variant="ghost" onClick={() => onDelete(u.id)}>
+                        <Button
+                          variant="ghost"
+                          onClick={() => onDelete(u.id)}
+                          aria-label={`Delete user ${u.email}`}
+                        >
                           <Trash className="size-4 text-destructive" />
                         </Button>
                       </div>
