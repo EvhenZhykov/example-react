@@ -54,11 +54,19 @@ class UserController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
-        $user = User::create([
+        $payload = [
             'name' => trim($data['first_name'].' '.$data['last_name']),
             'email' => $data['email'],
             'password' => $data['password'],
-        ]);
+        ];
+
+        // Only allow setting is_admin if current user can manage users
+        if ($request->user() && $request->user()->can('manage', User::class)) {
+            $isAdmin = $request->boolean('is_admin');
+            $payload['is_admin'] = $isAdmin;
+        }
+
+        $user = User::create($payload);
 
         return redirect()->route('users.index');
     }
@@ -74,10 +82,17 @@ class UserController extends Controller
             'email' => ['required', 'email', 'max:255', 'unique:users,email,'.$user->id],
         ]);
 
-        $user->update([
+        $payload = [
             'name' => trim($data['first_name'].' '.$data['last_name']),
             'email' => $data['email'],
-        ]);
+        ];
+
+        if ($request->user() && $request->user()->can('manage', User::class)) {
+            // allow setting is_admin on update when authorized
+            $payload['is_admin'] = $request->boolean('is_admin');
+        }
+
+        $user->update($payload);
 
         return redirect()->route('users.index');
     }

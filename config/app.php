@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -99,6 +98,19 @@ return [
 
     'key' => env('APP_KEY'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Application Admin Email
+    |--------------------------------------------------------------------------
+    |
+    | A single admin email can be configured via the ADMIN_EMAIL environment
+    | variable. This is used by the simple UserPolicy implementation to grant
+    | management rights when there is no dedicated roles/permissions table.
+    |
+    */
+
+    'admin_email' => env('ADMIN_EMAIL', null),
+
     'previous_keys' => [
         ...array_filter(
             explode(',', (string) env('APP_PREVIOUS_KEYS', '')),
@@ -122,5 +134,4 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
-
 ];

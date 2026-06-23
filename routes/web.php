@@ -20,4 +20,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 });
 
+// Temporary debug route: returns current authenticated user (auth required).
+Route::get('/debug/whoami', function () {
+    return auth()->user();
+})->middleware('auth');
+
 require __DIR__.'/settings.php';

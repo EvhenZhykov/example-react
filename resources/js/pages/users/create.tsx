@@ -1,13 +1,17 @@
 import React from 'react';
-import { Head, Link, Form } from '@inertiajs/react';
+import { Head, Link, Form, usePage } from '@inertiajs/react';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import PasswordInput from '@/components/password-input';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
 import users from '@/routes/users';
 
 export default function UsersCreate() {
+  const { props } = usePage();
+  const currentUser = (props as any).auth?.user;
+
   return (
     <>
       <Head title="Create User" />
@@ -47,6 +51,13 @@ export default function UsersCreate() {
                 <PasswordInput id="password_confirmation" name="password_confirmation" />
                 <InputError message={errors.password_confirmation} />
               </div>
+
+              {currentUser?.is_admin ? (
+                <div className="flex items-center gap-2">
+                  <Checkbox id="is_admin" name="is_admin" />
+                  <Label htmlFor="is_admin">Is admin</Label>
+                </div>
+              ) : null}
 
               <div className="flex gap-2">
                 <Button type="submit" disabled={processing}>

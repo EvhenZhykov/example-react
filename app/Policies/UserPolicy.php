@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Log;
 
 class UserPolicy
 {
@@ -15,17 +16,20 @@ class UserPolicy
     public function manage(User $actor): bool
     {
         // Allow if user has is_admin attribute truthy or matches configured admin email
-        if (property_exists($actor, 'is_admin') && ($actor->is_admin ?? false)) {
-            return true;
-        }
-
+        $isAdmin = (bool) ($actor->is_admin ?? false);
         $adminEmail = config('app.admin_email');
+        $isAdminByEmail = $adminEmail && $actor->email === $adminEmail;
+        $allowed = $isAdmin || $isAdminByEmail;
 
-        if ($adminEmail && $actor->email === $adminEmail) {
-            return true;
-        }
+        Log::info('UserPolicy::manage check', [
+            'actor_id' => $actor->id ?? null,
+            'actor_email' => $actor->email ?? null,
+            'actor_is_admin' => $actor->is_admin ?? null,
+            'config_admin_email' => $adminEmail ?? null,
+            'allowed' => $allowed,
+        ]);
 
-        return false;
+        return $allowed;
     }
 
     public function viewAny(User $actor): bool
