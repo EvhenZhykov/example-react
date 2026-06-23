@@ -116,7 +116,7 @@ export default function Users() {
   );
 }
 
-// @ts-ignore
+// @ts-expect-error -- layout is attached dynamically by Inertia convention.
 (Users as any).layout = {
   breadcrumbs: [
     {
