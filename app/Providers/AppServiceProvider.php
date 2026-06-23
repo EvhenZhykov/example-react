@@ -5,6 +5,9 @@ namespace App\Providers;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
+use App\Models\User;
+use App\Policies\UserPolicy;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 
@@ -24,6 +27,12 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
+
+        // Register UserPolicy mapping and a convenience gate
+        Gate::policy(User::class, UserPolicy::class);
+        Gate::define('manage-users', function (User $user) {
+            return (new UserPolicy())->manage($user);
+        });
     }
 
     /**
