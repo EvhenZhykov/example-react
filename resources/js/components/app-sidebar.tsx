@@ -28,6 +28,11 @@ const mainNavItems: NavItem[] = [
         href: users.index().url,
         icon: Users,
     },
+    {
+        title: 'Login logs',
+        href: users.index().url + '/logins',
+        icon: Users,
+    },
 ];
 
 const footerNavItems: NavItem[] = [

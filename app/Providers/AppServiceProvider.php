@@ -33,6 +33,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('manage-users', function (User $user) {
             return (new UserPolicy())->manage($user);
         });
+        // Login event listener is registered via EventServiceProvider, do not duplicate here.
     }
 
     /**
