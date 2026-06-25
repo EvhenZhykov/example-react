@@ -15,7 +15,7 @@ class LogSuccessfulLogin
         $request = request();
 
         LoginLog::create([
-            'user_id' => $event->user?->id,
+            'user_id' => (int) $event->user->getAuthIdentifier(),
             'ip_address' => $request->ip(),
             'user_agent' => $request->userAgent(),
             'created_at' => now(),

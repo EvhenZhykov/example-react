@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\LoginLog;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Inertia\Response;
 
 class LoginLogController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $perPage = (int) $request->get('per_page', 15);
 
