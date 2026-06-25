@@ -12,6 +12,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Protect with policy gate: only users who pass UserPolicy::manage may access these routes.
     Route::middleware(['can:manage,App\\Models\\User'])->group(function () {
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
+        Route::get('/users/logins', [App\Http\Controllers\LoginLogController::class, 'index'])->name('users.logins');
         Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
         Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
         Route::post('/users', [UserController::class, 'store'])->name('users.store');
