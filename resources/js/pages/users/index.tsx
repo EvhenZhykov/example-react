@@ -126,11 +126,9 @@ export default function Users() {
                             </Link>
                         )}
 
-                        {meta?.next_page_url && (
-                            <Link href={meta.next_page_url}>
-                                <Button variant="ghost">Next</Button>
-                            </Link>
-                        )}
+                        <Button asChild variant="ghost">
+                            <Link href={meta.next_page_url}>Next</Link>
+                        </Button>
                     </div>
                 </div>
             </div>
