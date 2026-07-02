@@ -11,10 +11,11 @@ class LoginLog extends Model
 
     protected $fillable = ['user_id', 'ip_address', 'user_agent', 'created_at'];
 
+    /**
+     * @return BelongsTo<User, LoginLog>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
-
-    // @phpstan-return BelongsTo<User, LoginLog>
 }
