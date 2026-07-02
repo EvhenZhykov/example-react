@@ -41,9 +41,7 @@ function resolveNameParts(user: User) {
 
     const first =
         user.first_name ??
-        fallback.slice(0, -1).join(' ') ??
-        fallback[0] ??
-        '';
+        (fallback.length > 1 ? fallback.slice(0, -1).join(' ') : (fallback[0] ?? ''));
 
     const last =
         user.last_name ??
