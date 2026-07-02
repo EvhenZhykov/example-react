@@ -15,4 +15,6 @@ class LoginLog extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    // @phpstan-return BelongsTo<User, LoginLog>
 }
