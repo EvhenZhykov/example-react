@@ -34,7 +34,9 @@ export default function Users() {
     const userProps = props.users ?? { data: [], meta: undefined };
 
     const handleDelete = useCallback((id: number, email: string) => {
-        if (!confirm(`Delete user ${email}?`)) return;
+        if (!confirm(`Delete user ${email}?`)) {
+            return;
+        }
 
         router.delete(users.destroy(id).url);
     }, []);
@@ -120,15 +122,17 @@ export default function Users() {
                     </div>
 
                     <div className="flex gap-2">
-                        {meta?.prev_page_url && (
+                        {meta?.prev_page_url ? (
                             <Link href={meta.prev_page_url}>
                                 <Button variant="ghost">Previous</Button>
                             </Link>
-                        )}
+                        ) : null}
 
-                        <Button asChild variant="ghost">
-                            <Link href={meta.next_page_url}>Next</Link>
-                        </Button>
+                        {meta?.next_page_url ? (
+                            <Button asChild variant="ghost">
+                                <Link href={meta.next_page_url}>Next</Link>
+                            </Button>
+                        ) : null}
                     </div>
                 </div>
             </div>
