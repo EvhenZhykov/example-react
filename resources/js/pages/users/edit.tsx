@@ -1,25 +1,12 @@
-import React, { useMemo } from 'react';
-import { Head, useForm, usePage, Link } from '@inertiajs/react';
+import React, { useMemo, useRef, useEffect, useCallback } from 'react';
+import { Head, useForm, usePage, router } from '@inertiajs/react';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import users from '@/routes/users';
-
-type User = {
-    id: number;
-    name?: string;
-    first_name?: string;
-    last_name?: string;
-    email: string;
-    is_admin?: boolean;
-};
-
-type CurrentUser = {
-    id?: number;
-    is_admin?: boolean;
-} | null;
+import type { User, CurrentUser } from '@/types/shared';
 
 type PageProps = {
     user: User;
@@ -73,10 +60,26 @@ export default function UsersEdit() {
     const { data, setData, post, processing, errors } =
         useForm<FormData>(initialValues);
 
-    const submit = (e: React.FormEvent<HTMLFormElement>) => {
+    // Keep form data in sync when `user` prop changes (e.g. client-side navigation)
+    useEffect(() => {
+        setData(initialValues);
+    }, [initialValues, setData]);
+
+    const firstRef = useRef<HTMLInputElement | null>(null);
+
+    useEffect(() => {
+        firstRef.current?.focus();
+    }, []);
+
+    const submit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         post(users.update(user.id).url);
-    };
+    }, [post, user.id]);
+
+    const handleCancel = useCallback(() => {
+        // Use Inertia/router navigation for SPA behaviour
+        router.visit(users.index().url);
+    }, []);
 
     return (
         <>
@@ -91,6 +94,7 @@ export default function UsersEdit() {
                         <Input
                             id="first_name"
                             value={data.first_name}
+                            ref={firstRef}
                             onChange={(e) =>
                                 setData('first_name', e.target.value)
                             }
@@ -139,11 +143,9 @@ export default function UsersEdit() {
                             {processing ? 'Saving...' : 'Save'}
                         </Button>
 
-                        <Link href={users.index().url}>
-                            <Button type="button" variant="ghost">
-                                Cancel
-                            </Button>
-                        </Link>
+                        <Button type="button" variant="ghost" onClick={handleCancel}>
+                            Cancel
+                        </Button>
                     </div>
                 </form>
             </div>

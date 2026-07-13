@@ -8,11 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import users from '@/routes/users';
 
-type CurrentUser = {
-    id?: number;
-    email?: string;
-    is_admin?: boolean;
-} | null;
+import type { CurrentUser } from '@/types/shared';
 
 type CreatePageProps = {
     auth?: { user?: CurrentUser };
