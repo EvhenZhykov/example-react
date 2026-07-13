@@ -3,26 +3,7 @@ import { Head, Link, usePage, router } from '@inertiajs/react';
 import { Pencil, Trash } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import users from '@/routes/users';
-
-type User = {
-    id: number;
-    name: string;
-    email: string;
-    created_at?: string;
-    is_admin?: boolean;
-};
-
-type PaginationMeta = {
-    current_page: number;
-    last_page: number;
-    prev_page_url?: string | null;
-    next_page_url?: string | null;
-};
-
-type Paginated<T> = {
-    data: T[];
-    meta?: PaginationMeta;
-};
+import type { User, Paginated } from '@/types/shared';
 
 type PageProps = {
     users?: Paginated<User>;
